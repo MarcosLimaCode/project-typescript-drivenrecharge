@@ -1,13 +1,11 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
+import rechargeRouter from "./routers/index.router";
 
 dotenv.config()
 const app = express();
 
-app.get("/health", (req: Request, res: Response) => {
-    res.sendStatus(200)
-}
-); 
+app.use(rechargeRouter);
 
 const port = process.env.PORT;
 
