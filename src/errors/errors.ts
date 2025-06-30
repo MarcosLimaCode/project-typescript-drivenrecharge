@@ -8,7 +8,7 @@ export function conflictError(entity: string) {
 export function notFoundError(entity: string) {
     return {
         type: "NOT FOUND",
-        message: `${entity} não encontrado.`
+        message: `${entity}`
     }
 }
 

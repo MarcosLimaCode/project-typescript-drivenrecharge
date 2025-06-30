@@ -1,7 +1,7 @@
 import joi from "joi";
-import { PhoneData } from "protocols/index.protocol";
+import { Phone, Recharge } from "protocols/index.protocol";
 
-const phoneSchema = joi.object<PhoneData>({
+export const phoneSchema = joi.object<Phone>({
     cpf: joi.string().length(11).required().invalid(null),
     phone: joi.string().required().min(10).max(11),
     carrier: joi.number().required(),
@@ -9,4 +9,10 @@ const phoneSchema = joi.object<PhoneData>({
     description: joi.string().required()
 });
 
-export default phoneSchema;
+
+export const rechargeSchema = joi.object<Recharge>({
+    phone: joi.number().required(),
+    price: joi.number().required().min(1000).max(100000)
+});
+
+
