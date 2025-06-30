@@ -1,10 +1,17 @@
-import express, { Request, Response, Router } from "express";
+import { createPhones } from "../controllers/index.controlers";
+import { Request, Response, Router } from "express";
+import { validateSchema } from "../middleware/schema.middleware";
+import phoneSchema from "../schemas/index.schemas";
 
 const rechargeRouter = Router()
 
+
 rechargeRouter.get("/health", (req: Request, res: Response) => {
-    res.send("OPAAAAA").status(200)
+    res.sendStatus(200);
 }
-); 
+);
+
+rechargeRouter.post("/phones", validateSchema(phoneSchema), createPhones);
+
 
 export default rechargeRouter;
