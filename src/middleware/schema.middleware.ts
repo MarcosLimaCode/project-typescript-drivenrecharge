@@ -6,7 +6,7 @@ export function validateSchema(schema: ObjectSchema) {
         const { error } = schema.validate(req.body, { abortEarly: false, convert: false });
         if (error) {
             const message = error.details.map(detail => detail.message);
-            res.status(400).send(message);
+            res.status(422).send(message);
             return
         }
         next();

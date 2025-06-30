@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { PhoneData } from "../protocols/index.protocol";
+import { createPhoneServices } from "../services/index.service";
 
 
-export async function createPhones(req: Request, res: Response) {
-    const phoneData = req.body as PhoneData;
-    res.send(phoneData.cpf);
+export async function createPhone(req: Request, res: Response) {
+    const result = await createPhoneServices(req.body);
+    res.status(201).send(result.rows[0]);
+    return
 };

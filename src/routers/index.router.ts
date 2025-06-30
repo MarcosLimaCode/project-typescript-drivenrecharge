@@ -1,7 +1,7 @@
-import { createPhones } from "../controllers/index.controlers";
 import { Request, Response, Router } from "express";
 import { validateSchema } from "../middleware/schema.middleware";
 import phoneSchema from "../schemas/index.schemas";
+import { createPhone } from "../controllers/index.controlers";
 
 const rechargeRouter = Router()
 
@@ -11,7 +11,7 @@ rechargeRouter.get("/health", (req: Request, res: Response) => {
 }
 );
 
-rechargeRouter.post("/phones", validateSchema(phoneSchema), createPhones);
+rechargeRouter.post("/phones", validateSchema(phoneSchema), createPhone);
 
 
 export default rechargeRouter;

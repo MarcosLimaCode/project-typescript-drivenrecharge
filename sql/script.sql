@@ -9,14 +9,10 @@ INSERT INTO carriers (name, code) VALUES ('Tim', 41);
 INSERT INTO carriers (name, code) VALUES ('Oi', 31);
 INSERT INTO carriers (name, code) VALUES ('Claro', 21);
 
-CREATE TABLE documents (
-  id SERIAL PRIMARY KEY,
-  cpf TEXT NOT NULL UNIQUE
-);
 
 CREATE TABLE phones (
   id SERIAL PRIMARY KEY,
-  contact_id INTEGER NOT NULL REFERENCES documents(id),
+  cpf TEXT NOT NULL,
   phone TEXT NOT NULL UNIQUE,
   carrier_id INTEGER NOT NULL REFERENCES carriers(id),
   name TEXT NOT NULL,
