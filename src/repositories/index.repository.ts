@@ -24,16 +24,16 @@ export async function verifyPhoneRepository(phone: string) {
     return result.rows;
 }
 
- export async function createRechargeRepository(phone: number, price: number) {
+export async function createRechargeRepository(phone: number, price: number) {
     const result = await db.query<RechargeData>(`
          INSERT INTO recharges (phone_id, price)
          VALUES ($1, $2)
          RETURNING *;`, [phone, price]);
-     return result;
- }
+    return result;
+}
 
 
- export async function verifyIdRepository(phone: number) {
+export async function verifyIdRepository(phone: number) {
     const result = await db.query<RechargeData>(`
                 SELECT * FROM phones 
                 WHERE id = $1;`, [phone]);
@@ -41,7 +41,7 @@ export async function verifyPhoneRepository(phone: string) {
 }
 
 
- export async function getPhoneRepository(document: string) {
+export async function getPhoneRepository(document: string) {
     const result = await db.query<PhoneData>(`SELECT * FROM phones WHERE cpf = $1;`, [document]);
     return result.rows;
 }
@@ -60,21 +60,26 @@ export async function getRechargesRepository(number: number) {
 
 export async function getSummaryRepository(document: string) {
     const result = await db.query<PhoneData>(
-        `SELECT phones.cpf AS document,
+        `SELECT p.cpf AS document,
 		json_agg(
 		json_build_object(
-		'number', phones.phone,
-		'name', phones.name, 
-		'description', phones.description, 
+		'number', p.phone,
+		'name', p.name, 
+		'description', p.description, 
 			'carrier', json_build_object(
 				'name', carriers.name, 
 				'code', carriers.code), 
-			'recharges', json_build_object(
-				'price', recharges.price))) AS phones
-        FROM phones 
-        JOIN carriers ON phones.carrier_id = carriers.id
-        JOIN recharges ON phone_id = recharges.id
-        WHERE phones.cpf = $1
-		GROUP BY phones.cpf;;`, [document]);
+				'recharges',
+				(SELECT json_agg(recharges)
+					FROM recharges
+					WHERE p.id = recharges.phone_id
+					GROUP BY recharges.phone_id
+					)						
+				)) AS phones
+        FROM phones p
+        JOIN carriers ON p.carrier_id = carriers.id
+        JOIN recharges ON phone_id = recharges.phone_id
+        WHERE p.cpf = $1
+		GROUP BY p.cpf;`, [document]);
     return result.rows;
 }
