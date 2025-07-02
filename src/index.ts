@@ -11,6 +11,6 @@ app.use(json())
 app.use(rechargeRouter);
 app.use(errorHandler);
 
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log("Funcionou!"));
